@@ -35,53 +35,89 @@ body{background-image:radial-gradient(ellipse at 12% 0%,#58300f 0,transparent 34
 @media(max-width:480px){.product{min-height:300px;padding:14px}.product-art{height:135px}.product-art img{height:112px;width:112px}.product-art .art-emoji{font-size:4.2rem}.category{font-size:1.4rem}}
 
 </style></head><body><header class="topbar"><button class="hamb" id="hamb" type="button" aria-label="Abrir menu">☰</button><a class="brand" href="index.html"><span class="bee">🐝</span><span>PIXELMON<br>COLMÉIA</span></a><div class="spacer"></div><nav class="nav" id="nav"><a href="index.html">Início</a><a href="loja.html">Loja</a><a href="pokemons.html">Pokémon</a><a href="boosters.html">Boosters</a><a href="creators.html">Creators</a><a href="carta.html">Carta aberta</a></nav><button class="btn" id="loginBtn" type="button">👤 Login</button></header><main><section class="wrap"><div class="head"><h1>🍯 Finalizar pedido</h1><p class="muted">Informe seus dados e baixe o resumo do pedido.</p></div><div class="form-card"><div id="lines" class="lines"></div><form id="checkoutForm"><label for="coupon">Cupom</label><input id="coupon" placeholder="Nenhum cupom disponível"><label for="discordNick">Nick do Discord</label><input id="discordNick" required placeholder="Seu nick do Discord"><label for="mcNick">Nick do Minecraft</label><input id="mcNick" required maxlength="16" placeholder="Seu nick do Minecraft"><div class="payment"><strong>Pagamento via Pix</strong><br>Chave Pix (e-mail): <strong>professorajana2022@gmail.com</strong><br><small>O pagamento e a entrega precisam de confirmação manual.</small></div><button class="btn" type="submit">Baixar resumo do pedido</button></form><p><a class="btn outline" href="loja.html">Voltar à loja</a></p></div></section></main><footer class="footer"><div><strong>🐝 PIXELMON COLMÉIA</strong></div><div class="footer-links"><a href="index.html">Início</a><a href="loja.html">Loja</a><a href="pokemons.html">Pokémon</a><a href="boosters.html">Boosters</a><a href="creators.html">Creators</a><a href="carta.html">Carta aberta</a><a href="https://discord.gg/XtrxqZmdn" target="_blank" rel="noopener">Discord oficial</a></div><p>© 2026 Pixelmon Colméia • Yuta e Poio</p></footer><div class="modal-backdrop" id="loginModal"><div class="modal"><h2>🐝 Entrar na Colméia</h2><p class="muted">O login Google real precisa ser ativado no Firebase.</p><button class="btn google" id="googleLogin" type="button">🌐 Continuar com Google</button><form id="loginForm"><label for="mcLoginNick">Nick do Minecraft</label><input id="mcLoginNick" maxlength="16" required placeholder="SeuNickMinecraft"><div class="modal-actions"><button class="btn" type="submit">Salvar perfil</button><button class="btn outline" id="closeLogin" type="button">Fechar</button></div></form><small class="muted">Demonstração: não informe sua senha Google aqui.</small></div></div><div class="toast" id="toast"></div><button class="btn cart" id="cartBtn" type="button" aria-label="Abrir carrinho">🛒 <span class="count" id="cartCount">0</span></button><script>
-const $=id=>document.getElementById(id);let cart=JSON.parse(sessionStorage.getItem('colmeiaCart')||'[]');
-function toast(s){let t=$('toast');if(!t)return;t.textContent=s;t.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.remove('show'),2800)}
-function updateCart(){if($('cartCount'))$('cartCount').textContent=cart.length;sessionStorage.setItem('colmeiaCart',JSON.stringify(cart))}
-function addCart(name,price){cart.push({name,price});updateCart();toast(name+' adicionado ao carrinho!')}
-function total(){return cart.reduce((s,p)=>s+Number(String(p.price).replace(/\./g,'').replace(',','.')),0)}
-function money(n){return n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
-document.addEventListener('DOMContentLoaded',()=>{updateCart();if($('hamb'))$('hamb').onclick=()=>$('nav').classList.toggle('open');if($('nav'))$('nav').querySelectorAll('a').forEach(a=>a.onclick=()=>$('nav').classList.remove('open'));if($('loginBtn'))$('loginBtn').onclick=()=>$('loginModal').classList.add('open');if($('closeLogin'))$('closeLogin').onclick=()=>$('loginModal').classList.remove('open');if($('loginModal'))$('loginModal').onclick=e=>{if(e.target===$('loginModal'))$('loginModal').classList.remove('open')};if($('googleLogin'))$('googleLogin').onclick=()=>toast('Para login Google real, configure Firebase Authentication.');if($('loginForm'))$('loginForm').onsubmit=e=>{e.preventDefault();sessionStorage.setItem('colmeiaNick',$('mcLoginNick').value.trim());$('loginModal').classList.remove('open');toast('Nick salvo nesta sessão. Login Google ainda precisa ser configurado.')};if($('cartBtn'))$('cartBtn').onclick=()=>{if(!cart.length){toast('Carrinho vazio!');return}location.href='checkout.html'};document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addCart(b.dataset.name,b.dataset.price))});
-</script><script>
-document.addEventListener("DOMContentLoaded",()=>{
-  const lines=$("lines"), form=$("checkoutForm");
-  function renderCart(){
-    updateCart();
-    if(!cart.length){
-      lines.innerHTML='<div class="cart-empty">🛒 Seu carrinho está vazio.<br>Volte à loja para escolher seus produtos.</div>';
-      form.style.display="none";
-      return;
-    }
-    form.style.display="block";
-    lines.innerHTML="";
-    cart.forEach((p,i)=>{
-      const row=document.createElement("div"); row.className="cart-row";
-      const info=document.createElement("div"); info.className="cart-row-info";
-      const name=document.createElement("div"); name.className="cart-row-name"; name.textContent=`${i+1}. ${p.name}`;
-      const price=document.createElement("div"); price.className="cart-row-price"; price.textContent=`R$ ${p.price}`;
-      const remove=document.createElement("button"); remove.type="button"; remove.className="remove-item"; remove.textContent="🗑️ Remover"; remove.setAttribute("aria-label",`Remover ${p.name} do carrinho`); remove.dataset.removeIndex=String(i);
-      info.append(name,price); row.append(info,remove); lines.append(row);
-    });
-    const totalLine=document.createElement("div"); totalLine.className="cart-total"; totalLine.textContent=`🍯 Total: R$ ${money(total())}`; lines.append(totalLine);
+const $ = id => document.getElementById(id);
+function readCart(){
+  try {
+    const value = JSON.parse(sessionStorage.getItem('colmeiaCart') || '[]');
+    return Array.isArray(value) ? value.filter(p => p && typeof p.name === 'string') : [];
+  } catch (_) { return []; }
+}
+let cart = readCart();
+function toast(message){
+  const element = $('toast'); if (!element) return;
+  element.textContent = message; element.classList.add('show');
+  clearTimeout(window.colmeiaToastTimer);
+  window.colmeiaToastTimer = setTimeout(() => element.classList.remove('show'), 2600);
+}
+function saveCart(){
+  try { sessionStorage.setItem('colmeiaCart', JSON.stringify(cart)); } catch (_) {}
+  const count = $('cartCount'); if (count) count.textContent = String(cart.length);
+}
+function parsePrice(value){
+  if (typeof value === 'number') return value;
+  const normalized = String(value ?? '0').replace(/R\$\s?/g,'').replace(/\./g,'').replace(',','.').trim();
+  const result = Number(normalized); return Number.isFinite(result) ? result : 0;
+}
+function money(value){ return value.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function total(){ return cart.reduce((sum, item) => sum + parsePrice(item.price), 0); }
+function renderCart(){
+  const lines = $('lines'), form = $('checkoutForm');
+  if (!lines) return;
+  saveCart(); lines.replaceChildren();
+  if (!cart.length){
+    const empty = document.createElement('div'); empty.className = 'cart-empty';
+    empty.innerHTML = '🛒 Seu carrinho está vazio.<br>Volte à loja para escolher seus produtos.';
+    lines.append(empty);
+    if (form) form.style.display = 'none';
+    return;
   }
-  lines.addEventListener("click",e=>{
-    const button=e.target.closest("[data-remove-index]"); if(!button)return;
-    const i=Number(button.dataset.removeIndex); if(!Number.isInteger(i)||i<0||i>=cart.length)return;
-    const removed=cart.splice(i,1)[0]; updateCart(); renderCart(); toast(`${removed.name} removido do carrinho.`);
+  if (form) form.style.display = 'block';
+  cart.forEach((item, index) => {
+    const row = document.createElement('div'); row.className = 'cart-row';
+    const info = document.createElement('div'); info.className = 'cart-row-info';
+    const name = document.createElement('div'); name.className = 'cart-row-name';
+    name.textContent = item.name;
+    const price = document.createElement('div'); price.className = 'cart-row-price';
+    price.textContent = 'R$ ' + money(parsePrice(item.price));
+    info.append(name, price);
+    const remove = document.createElement('button'); remove.type = 'button';
+    remove.className = 'remove-item'; remove.textContent = '🗑️ Remover';
+    remove.setAttribute('aria-label', 'Remover ' + item.name + ' do carrinho');
+    remove.dataset.removeIndex = String(index);
+    row.append(info, remove); lines.append(row);
   });
-  renderCart();
-  form.onsubmit=e=>{
+  const totalLine = document.createElement('div'); totalLine.className = 'cart-total';
+  totalLine.textContent = '🍯 Total: R$ ' + money(total()); lines.append(totalLine);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const lines = $('lines'), form = $('checkoutForm');
+  saveCart(); renderCart();
+  if ($('hamb') && $('nav')) $('hamb').addEventListener('click', () => $('nav').classList.toggle('open'));
+  if ($('nav')) $('nav').querySelectorAll('a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
+  if ($('loginBtn') && $('loginModal')) $('loginBtn').addEventListener('click', () => $('loginModal').classList.add('open'));
+  if ($('closeLogin') && $('loginModal')) $('closeLogin').addEventListener('click', () => $('loginModal').classList.remove('open'));
+  if ($('loginModal')) $('loginModal').addEventListener('click', e => { if (e.target === $('loginModal')) $('loginModal').classList.remove('open'); });
+  if ($('googleLogin')) $('googleLogin').addEventListener('click', () => toast('O login Google precisa ser configurado no Firebase Authentication.'));
+  if ($('loginForm')) $('loginForm').addEventListener('submit', e => { e.preventDefault(); sessionStorage.setItem('colmeiaNick', $('mcLoginNick').value.trim()); $('loginModal').classList.remove('open'); toast('Nick salvo nesta sessão.'); });
+  if ($('cartBtn')) $('cartBtn').addEventListener('click', () => { if (!cart.length) { toast('Carrinho vazio!'); return; } location.href = 'checkout.html'; });
+  if (lines) lines.addEventListener('click', e => {
+    const button = e.target.closest('[data-remove-index]'); if (!button) return;
+    const index = Number(button.dataset.removeIndex);
+    if (!Number.isInteger(index) || index < 0 || index >= cart.length) return;
+    const removed = cart.splice(index, 1)[0]; saveCart(); renderCart(); toast(removed.name + ' removido do carrinho.');
+  });
+  document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => {
+    cart.push({name: button.dataset.name || 'Produto', price: button.dataset.price || '0,00'}); saveCart(); toast((button.dataset.name || 'Produto') + ' adicionado ao carrinho!');
+  }));
+  if (form) form.addEventListener('submit', e => {
     e.preventDefault();
-    if(!cart.length){toast("Seu carrinho está vazio.");return;}
-    if($("coupon").value.trim()){toast("Nenhum cupom válido está cadastrado.");return;}
-    const txt="PEDIDO PIXELMON COLMÉIA
-"+cart.map((p,i)=>`${i+1}. ${p.name} — R$ ${p.price}`).join("
-")+"
-Total: R$ "+money(total())+"
-Nick Discord: "+$("discordNick").value+"
-Nick Minecraft: "+$("mcNick").value+"
-Pix: professorajana2022@gmail.com";
-    const a=document.createElement("a"); const url=URL.createObjectURL(new Blob([txt],{type:"text/plain;charset=utf-8"})); a.href=url; a.download="pedido-pixelmon-colmeia.txt"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); toast("Resumo baixado. Envie ao atendimento para confirmar.");
-  };
+    if (!cart.length) { toast('Seu carrinho está vazio.'); renderCart(); return; }
+    if ($('coupon').value.trim()) { toast('Nenhum cupom válido está cadastrado.'); return; }
+    const linesText = cart.map((item, index) => `${index + 1}. ${item.name} — R$ ${money(parsePrice(item.price))}`).join('\n');
+    const summary = ['PEDIDO PIXELMON COLMÉIA', linesText, 'Total: R$ ' + money(total()), 'Nick Discord: ' + $('discordNick').value, 'Nick Minecraft: ' + $('mcNick').value, 'Pix: professorajana2022@gmail.com'].join('\n');
+    const url = URL.createObjectURL(new Blob([summary], {type:'text/plain;charset=utf-8'}));
+    const link = document.createElement('a'); link.href = url; link.download = 'pedido-pixelmon-colmeia.txt'; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000); toast('Resumo baixado. Envie ao atendimento para confirmar.');
+  });
 });
 </script></body></html>
