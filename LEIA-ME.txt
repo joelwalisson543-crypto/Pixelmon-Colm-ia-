@@ -10,3 +10,7 @@ PÁGINAS: index.html (início e VIPs), loja.html, pokemons.html, checkout.html, 
 BOTÕES: menu mobile abre/fecha; links levam a páginas; carrossel VIP tem setas, pontos e avanço automático; adicionar produto atualiza carrinho; carrinho abre checkout; checkout baixa resumo de pedido.
 
 LIMITAÇÕES: login Google é apenas demonstrativo até configurar Firebase Authentication. Não digite senha Google na página. O Pix é exibido conforme informado, mas não há validação automática de pagamento nem entrega automática. Cupons não estão cadastrados.
+
+
+ATUALIZAÇÃO VISUAL: a loja ganhou cartões mais espaçosos, imagens ilustrativas por produto, efeitos de brilho/flutuação e emojis. A página Pokémon agora inclui a imagem mega-anime-banner.jpg na pasta assets.
+IMPORTANTE: as imagens dos produtos são carregadas de uma fonte externa (PokeAPI sprites); para visualizá-las é necessária conexão com a internet.
