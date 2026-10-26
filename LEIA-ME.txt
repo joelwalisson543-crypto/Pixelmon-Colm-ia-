@@ -1,0 +1,24 @@
+PIXELMON COLMÉIA — SITE PARA GITHUB PAGES
+
+PUBLICAR NO GITHUB PAGES
+1. Entre no GitHub e crie um repositório público, por exemplo: pixelmon-colmeia.
+2. Extraia o ZIP e envie index.html e LEIA-ME.txt para a raiz do repositório.
+3. Vá em Settings > Pages.
+4. Em Build and deployment, escolha Deploy from a branch.
+5. Escolha a branch main e a pasta /(root), depois Save.
+6. Aguarde a publicação. O endereço será parecido com https://SEU-USUARIO.github.io/pixelmon-colmeia/.
+
+O QUE ESTÁ INCLUÍDO
+- Tema laranja com visual de colmeia e menu responsivo.
+- Carrossel automático com os cinco VIPs e preços.
+- Loja de chaves, modificadores, Lucky Blocks e Pokéfichas.
+- Carrinho que abre checkout com cupom, nick do Discord, nick Minecraft e instruções Pix.
+- Área de login visual com botão “Continuar com Google”.
+- Lista de Pokémon extraída de form:mega / variantes Mega e form:anime do DatapackMega.zip.
+- Carta aberta, boosters e créditos de Yuta e Poio.
+
+LIMITAÇÕES IMPORTANTES
+- O botão Google ainda é uma interface demonstrativa. Para autenticação real, crie um projeto Firebase, ative Authentication > Google e configure os domínios autorizados do GitHub Pages. Nunca coloque chaves privadas ou segredos no HTML.
+- O site estático não pode validar com segurança cupom, gravar pedidos privados ou verificar pagamentos. Nenhum cupom está cadastrado; por isso o formulário informa que não há cupons válidos.
+- O Pix é exibido conforme informado. O site não confirma pagamento automaticamente; a confirmação e entrega devem ser manuais até integrar um backend e um provedor adequado.
+- Antes de vender, defina regras de reembolso, suporte e entrega dos produtos digitais.
