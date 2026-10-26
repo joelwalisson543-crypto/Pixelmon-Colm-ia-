@@ -14,3 +14,12 @@ LIMITAÇÕES: login Google é apenas demonstrativo até configurar Firebase Auth
 
 ATUALIZAÇÃO VISUAL: a loja ganhou cartões mais espaçosos, imagens ilustrativas por produto, efeitos de brilho/flutuação e emojis. A página Pokémon agora inclui a imagem mega-anime-banner.jpg na pasta assets.
 IMPORTANTE: as imagens dos produtos são carregadas de uma fonte externa (PokeAPI sprites); para visualizá-las é necessária conexão com a internet.
+
+ATUALIZAÇÃO DO CARRINHO: na página checkout.html, cada produto agora tem o botão “Remover”. O total e a contagem do carrinho são atualizados automaticamente.
+
+
+CORREÇÃO VISUAL DA LOJA
+- Cada produto agora tem seu próprio cartão ilustrado com emoji animado local.
+- Removidas imagens externas incorretas que estavam todas acumuladas no primeiro produto.
+- Grid responsivo: três colunas em desktop, duas em celulares maiores e uma em telas estreitas.
+- Não precisa carregar GIFs nem imagens remotas para as ilustrações dos produtos aparecerem.
